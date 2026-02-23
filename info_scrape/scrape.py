@@ -138,7 +138,7 @@ def fetch_program_details(prog_id: str):
     return details
 
 def save_programs(degree_type: str, programs):
-    folder = f"../data/{degree_type}"
+    folder = f"../data"
     os.makedirs(folder, exist_ok=True)
     
     enhanced_programs = []
@@ -151,7 +151,7 @@ def save_programs(degree_type: str, programs):
             time.sleep(DETAIL_SLEEP)  # Rate limit for details
         enhanced_programs.append(enhanced_prog)
     
-    combined_path = os.path.join(folder, "programs.json")
+    combined_path = os.path.join(folder, f"{degree_type}.json")
     with open(combined_path, "w", encoding="utf-8") as f:
         json.dump(enhanced_programs, f, ensure_ascii=False, indent=4)
     print(f"Saved {len(enhanced_programs)} programs (with details) to {combined_path}")
