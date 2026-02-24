@@ -22,8 +22,7 @@ def initialize_vector_store():
     """Loads JSON data, extracts text, and initializes the FAISS vector store."""
     docs = []
     
-    # 1. Process univerities.json
-    with open('universities.json', 'r', encoding='utf-8') as f:
+    with open('data/universities.json', 'r', encoding='utf-8') as f:
         unis = json.load(f)
         for uni_id, data in unis.items():
             content = data.get('content', 'No description available.')
@@ -32,9 +31,9 @@ def initialize_vector_store():
             docs.append(Document(page_content=text, metadata={"source": "universities", "id": uni_id}))
             
     degree_files = {
-        "bachelor": "bachelor_clean.json",
-        "master": "master_clean.json",
-        "doctorate": "doctorate_clean.json"
+        "bachelor": "data/bachelor_clean.json",
+        "master": "data/master_clean.json",
+        "doctorate": "data/doctorate_clean.json"
     }
 
     for degree_level, filename in degree_files.items():
@@ -42,10 +41,18 @@ def initialize_vector_store():
             courses = json.load(f)
             for course in courses:
                 name = course.get('courseName', 'Unknown Course')
+                university_id = course.get('university_id', 'Unknown University')
                 academy = course.get('academy', 'Unknown University')
                 tuition = course.get('tuitionFees', 'Unknown')
+                beginning = course.get('beginning', 'Unknown')
+                programmeDuration = course.get('programmeDuration', 'Unknown')
+                application_deadline = course.get('applicationDeadline', 'Unknown')
+                request_language = course.get('requestLanguage', 'Unknown')
+                is_elearning = course.get('isElearning', 'Unknown')
+                details = course.get('gallery_details', 'No details available.')
+                
                     
-                text = f"Degree Level: {degree_level.capitalize()}\nCourse: {name}\nUniversity: {academy}\nTuition: {tuition}"
+                text = f"""Degree Level: {degree_level.capitalize()}\nCourse: {name}\nUniversity: {academy}\nTuition: {tuition}\nBeginning: {beginning}\nDuration: {programmeDuration}\nApplication Deadline: {application_deadline}\nRequest Language: {request_language}\nIs E-learning: {is_elearning}\nDetails: {details}"""
                     
                 docs.append(Document(
                     page_content=text, 
@@ -62,18 +69,40 @@ def initialize_vector_store():
     
     return vector_store
 
-def get_response(prompt):
+def get_response(prompt, vector_store):
+    retrieved_docs = vector_store.similarity_search(prompt, k=3)
+    context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+    augmented_prompt = f"""
+    Use the following context about German universities and courses to answer the user's question. 
+    If the answer is not in the context, say you don't know based on the provided data.
+    
+    Context:
+    {context}
+    
+    Question:
+    {prompt}
+    """
+    
+    system_prompt = """
+    You are an expert advisor in enrollment for German universities and academic programs. 
+    Use the following retrieved context to answer the user's question concisely and accurately. 
+    If the answer cannot be found in the context, explicitly say that you do not have that information.
+    """
+    
     response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are an expert advisor in enrollment for German universities and academic program. Give the user concise and accurate information based on the question. If you don't know the answer, say you don't know."},
-                {"role": "user", "content": prompt}
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": augmented_prompt}
             ],
             temperature=0.1
         )
     return response.choices[0].message.content.strip()
 
 def main():
+    with st.spinner("Loading data and initializing vector store..."):
+        vector_store = initialize_vector_store()
+    
     if "messages" not in st.session_state:
         st.session_state.messages = []
     for msg in st.session_state.messages:
@@ -89,7 +118,6 @@ def main():
         
     
     if prompt := st.chat_input("What is up?"):
-        st.write("Welcome to the German University Chatbot!")
         st.session_state.messages.append(
             {"role": "user", "content": prompt}
         )
@@ -97,7 +125,7 @@ def main():
         with st.chat_message("user"):
             st.write(prompt)
 
-        response = get_response(prompt)
+        response = get_response(prompt, vector_store)
 
         st.session_state.messages.append(
             {"role": "assistant", "content": response}
