@@ -1,0 +1,14 @@
+{
+    "summary_name": "Berlin University Options",
+    "timestamp": "2026-02-25 10:04:16",
+    "messages": [
+        {
+            "role": "user",
+            "content": "give me info about uni in berlin"
+        },
+        {
+            "role": "assistant",
+            "content": "There are several universities in Berlin, each offering unique programs and experiences:\n\n1. **Berlin International University of Applied Sciences**:\n   - A state-recognised and non-profit university focused on practice-oriented education.\n   - Offers programs in English and provides an English Preparatory Programme for students needing to improve their language skills.\n   - Students can participate in various Erasmus+ programmes and have opportunities for study and internship exchanges through international networks.\n   - Located in the center of Berlin, it provides a vibrant and intercultural study atmosphere.\n\n2. **Freie Universität Berlin**:\n   - A modern university with around 33,000 students enrolled in approximately 170 degree programs across various disciplines.\n   - Recognized as a University of Excellence and part of the Berlin University Alliance.\n   - Offers extensive support services for international students and has a strong international presence with many partnerships worldwide.\n   - Located in the green district of Dahlem, it features a beautiful campus with access to outdoor activities.\n\n3. **Technische Universität Berlin**:\n   - An internationally renowned research-intensive university focusing on science and technology.\n   - Promotes interdisciplinary collaboration and has strong ties with industry and research partners.\n   - Located on the EUREF campus, which emphasizes sustainability and applied research.\n   - Offers a rich cultural environment in Berlin, providing students with numerous extracurricular opportunities.\n\nEach university has its own strengths and focus areas, making Berlin a diverse and attractive location for higher education."
+        }
+    ]
+}
