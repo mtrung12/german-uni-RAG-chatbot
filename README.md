@@ -11,6 +11,16 @@ All information is collected from **DAAD (German Academic Exchange Service)** an
 
 ---
 
+## Live Demo
+
+You can access the deployed application directly at:
+
+https://germanuni.streamlit.app/
+
+No local setup is required to try the chatbot via the web interface.
+
+---
+
 ## Features
 
 - Domain-specific chatbot for German university admissions  
@@ -36,9 +46,9 @@ All information is collected from **DAAD (German Academic Exchange Service)** an
 
 ---
 
-## Setup Instructions
+## Setup Instructions (Local Deployment)
 
-Follow the steps below to run the project locally.
+Follow the steps below if you want to build and run the chatbot locally.
 
 ### Step 1: Scrape Admission Data
 
@@ -72,7 +82,20 @@ python create_vector.py
 
 ---
 
-### Step 4: Run the Chatbot Application
+### Step 4: Configure Environment Variables
+
+Create a `.env` file in the **project root directory** with the following content:
+
+```env
+OPENAI_API_KEY=""
+GROQ_API_KEY=""
+```
+
+Make sure to replace the empty strings with your actual API keys.
+
+---
+
+### Step 5: Run the Chatbot Application
 
 Return to the project root and start the Streamlit application:
 
@@ -81,7 +104,7 @@ cd ..
 streamlit run app.py
 ```
 
-The chatbot will be available in your browser after launching.
+After launching, the chatbot will be available in your browser.
 
 ---
 
@@ -102,8 +125,9 @@ pip install -r requirements.txt
 
 ## Notes
 
-- Please ensure that web scraping complies with DAAD’s terms of service.
+- Ensure that web scraping complies with DAAD’s terms of service.
 - Response quality depends on the completeness and freshness of the scraped data.
+- The hosted version and the local version use the same RAG pipeline.
 - This project is intended for educational and research purposes.
 
 ---
