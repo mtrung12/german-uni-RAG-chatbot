@@ -87,7 +87,7 @@ The chatbot will be available in your browser after launching.
 
 ## Requirements
 
-- Python 3.9 or higher
+- Python 3.10
 - Streamlit
 - FAISS
 - Other dependencies listed in `requirements.txt`

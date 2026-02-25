@@ -129,6 +129,9 @@ def main():
     
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "is_new_chat" not in st.session_state:
+        st.session_state.is_new_chat = True
+    
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
